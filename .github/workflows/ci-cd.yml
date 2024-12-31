@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test  # If you have test scripts
+
+      - name: Build the app
+        run: npm run build  # Adjust as per your project
+
+      - name: Deploy to Heroku (or another platform)
+        uses: akshnz/heroku-deploy-action@v1
+        with:
+          heroku_app_name: your-heroku-app-name
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
